@@ -65,3 +65,4 @@ def test(net):
         acc_test = float(correct.numpy() / len(test_dataloader.dataset))
         
     print('Test accuracy: ', 100.*acc_test)
+   
