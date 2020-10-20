@@ -139,7 +139,7 @@ def train(trainloader, model, criterion, optimizer, epoch):
                    epoch, i, len(trainloader), batch_time=batch_time,
                    data_time=data_time, loss=losses, top1=top1))
             
-def adjust_learning_rate(optimizer, epoch):
+def adjust_learning_rate(model, optimizer, epoch):
     if epoch == 30:
         return optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-04)
     elif epoch == 40:
