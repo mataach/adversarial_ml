@@ -162,7 +162,7 @@ class QuantConv2d(nn.Conv2d):
         super(QuantConv2d, self).__init__(in_channels, out_channels, kernel_size, stride, padding, dilation, groups,
                                           bias)
         self.layer_type = 'QuantConv2d'
-        self.bit = 2
+        self.bit = 3
         self.weight_quant = weight_quantize_fn(w_bit=self.bit, power=True)
         self.act_grid = build_power_value(self.bit, additive=True)
         self.act_alq = act_quantization(self.bit, self.act_grid, power=True)
