@@ -29,11 +29,13 @@ x_train = np.swapaxes(x_train, 1, 3).astype(np.float32)
 x_test = np.swapaxes(x_test, 1, 3).astype(np.float32)
 
 train_dataset = TensorDataset(torch.Tensor(x_train), torch.Tensor(y_train))
-train_dataloader = DataLoader(train_dataset, batch_size=128)
+train_dataloader = DataLoader(train_dataset, batch_size=128, num_workers=6)
 
 test_dataset = TensorDataset(torch.Tensor(x_test), torch.Tensor(y_test))
 test_dataloader = DataLoader(test_dataset, batch_size=1000)
-test_dataloader_single =  DataLoader(test_dataset, batch_size=1)
+test_dataloader_single =  DataLoader(test_dataset, batch_size=1, num_workers=6)
+
+
 
 
 # Training
@@ -63,6 +65,15 @@ def test(net):
             target = np.argmax(target, axis=1)
             correct += pred.eq(target.data.view_as(pred)).sum()
         acc_test = float(correct.numpy() / len(test_dataloader.dataset))
-        
+     
     print('Test accuracy: ', 100.*acc_test)
-   
+    return acc_test
+
+
+def adjust_learning_rate(model, optimizer, epoch):
+    if epoch == 30:
+        return optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
+    elif epoch == 40:
+        return optim.SGD(model.parameters(), lr=0.001, momentum=0.9, weight_decay=5e-4)
+    return optimizer
+
